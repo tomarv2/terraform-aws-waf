@@ -50,7 +50,7 @@ module "waf" {
       }
       visibility_config = {
         cloudwatch_metrics_enabled = false
-        metric_name                = "AWSManagedRuleshCommonRuleSet-metric"
+        metric_name                = "allow-custom-ip-set-metric"
         sampled_requests_enabled   = false
       }
     },
@@ -75,7 +75,7 @@ module "waf" {
           {
             byte_match_statement = {
               field_to_match = {
-                single_header = {"name": "tines-token"}
+                single_header = {"name": "x-demo"}
               }
               positional_constraint = "EXACTLY"
               search_string         = "hello_world"
