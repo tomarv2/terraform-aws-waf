@@ -55,7 +55,7 @@ module "waf" {
       }
     },
     {
-      ### AND rule
+      # AND rule
       name     = "allow-specific-uri-path-from-webhook"
       priority = 5
       action   = "allow"
@@ -67,7 +67,7 @@ module "waf" {
                 uri_path = "{}"
               }
               positional_constraint = "STARTS_WITH"
-              search_string         = "/webhook"
+              search_string         = "/uri/path"
               priority              = 0
               type                  = "NONE"
             }
@@ -87,9 +87,32 @@ module "waf" {
       }
       visibility_config = {
         cloudwatch_metrics_enabled = false
+        metric_name                = "allow-custom-ip-set-metric"
         sampled_requests_enabled   = false
       }
-    }
+    },
+    {
+     # Byte match rules
+      name     = "block-uri-path"
+      priority = "2"
+      action   = "block"
+
+      byte_match_statement = {
+        field_to_match = {
+          uri_path = "{}"
+        }
+        positional_constraint = "STARTS_WITH"
+        search_string         = "/uri/path"
+        priority              = 100
+        type                  = "NONE"
+      }
+
+      visibility_config = {
+        cloudwatch_metrics_enabled = false
+        metric_name                = "block-uri-path-metric"
+        sampled_requests_enabled   = false
+      }
+    },
   ]
   teamid = var.teamid
   prjid = var.prjid
