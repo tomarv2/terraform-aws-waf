@@ -19,9 +19,9 @@ module "common" {
 # IP set resources
 #####
 resource "aws_wafv2_ip_set" "custom_ip_set" {
-  name = "${var.name_prefix}-custom-ip-set"
+  name = "${var.teamid}-${var.prjid}-custom-ip-set"
 
-  scope              = "REGIONAL"
+  scope              = var.scope
   ip_address_version = "IPV4"
 
   addresses = module.common.cidr_for_sec_grp_access
@@ -31,11 +31,11 @@ module "waf" {
   source = "../.."
 
   allow_default_action = false
-  scope = "REGIONAL"
+  scope = var.scope
   alb_arn = "arn:aws:elasticloadbalancing:us-west-2:12345789012:loadbalancer/app/demo-app/abcdef"
   visibility_config = {
     cloudwatch_metrics_enabled = false
-    metric_name                = "${var.name_prefix}-waf-setup-waf-main-metrics"
+    metric_name                = "${var.teamid}-${var.prjid}-waf-setup-waf-main-metrics"
     sampled_requests_enabled   = false
   }
 
