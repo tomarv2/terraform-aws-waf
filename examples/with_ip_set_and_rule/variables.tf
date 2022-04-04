@@ -14,8 +14,8 @@ variable "region" {
   default     = "us-west-2"
 }
 
-variable "name_prefix" {
-  description = "A prefix used for naming resources."
+variable "scope" {
   type        = string
-  default     = "example"
+  description = "Specifies whether this is for an AWS CloudFront distribution or for a regional application. Valid values are CLOUDFRONT or REGIONAL. To work with CloudFront, you must also specify the region us-east-1 (N. Virginia) on the AWS provider."
+  default     = "REGIONAL"
 }
