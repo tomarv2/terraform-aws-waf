@@ -12,4 +12,4 @@ jobs:
       with:
         title-regex: '^((Pulling|Update from) refs\/heads\/|(\[tf (plan|apply|destroy|status)\]|\[non tf\])\s(feat|fix|build|chore|ci|docs|style|refactor|perf|test)(\!?): (.{3,250})[^\s*]$)'
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        auto-close-message: 'Closing this pull request since the title does not match `%pattern%` pattern. Please fix the title and re-open the pull request.'
+        auto-close-message: 'Closing this pull request since the title does not match %pattern% pattern. Please fix the title and re-open the pull request.'
