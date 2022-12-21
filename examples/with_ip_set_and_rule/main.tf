@@ -2,7 +2,7 @@ terraform {
   required_version = ">= 1.0.1"
   required_providers {
     aws = {
-      version = "~> 3.74"
+      version = "~> 4.35"
     }
   }
 }
@@ -31,8 +31,8 @@ module "waf" {
   source = "../.."
 
   allow_default_action = false
-  scope = var.scope
-  alb_arn = "arn:aws:elasticloadbalancing:us-west-2:12345789012:loadbalancer/app/demo-app/abcdef"
+  scope                = var.scope
+  alb_arn              = "arn:aws:elasticloadbalancing:us-west-2:12345789012:loadbalancer/app/demo-app/abcdef"
   visibility_config = {
     cloudwatch_metrics_enabled = false
     metric_name                = "${var.teamid}-${var.prjid}-waf-setup-waf-main-metrics"
@@ -75,7 +75,7 @@ module "waf" {
           {
             byte_match_statement = {
               field_to_match = {
-                single_header = {"name": "x-demo"}
+                single_header = { "name" : "x-demo" }
               }
               positional_constraint = "EXACTLY"
               search_string         = "hello_world"
@@ -92,7 +92,7 @@ module "waf" {
       }
     },
     {
-     # Byte match rules
+      # Byte match rules
       name     = "block-uri-path"
       priority = "2"
       action   = "block"
@@ -115,5 +115,5 @@ module "waf" {
     },
   ]
   teamid = var.teamid
-  prjid = var.prjid
+  prjid  = var.prjid
 }

@@ -1,3 +1,7 @@
+locals {
+  name       = var.name != null ? var.name : "${var.teamid}-${var.prjid}"
+}
+
 resource "aws_wafv2_web_acl" "main" {
   count = var.enabled ? 1 : 0
 
@@ -218,6 +222,23 @@ resource "aws_wafv2_web_acl" "main" {
                     name = lower(lookup(single_header.value, "name"))
                   }
                 }
+                dynamic "json_body" {
+                  for_each = length(lookup(field_to_match.value, "json_body", {})) == 0 ? [] : [lookup(field_to_match.value, "json_body")]
+                  content {
+                    invalid_fallback_behavior = upper(lookup(json_body.value, "invalid_fallback_behavior"))
+                    match_scope = upper(lookup(json_body.value, "match_scope"))
+                    oversize_handling = upper(lookup(json_body.value, "oversize_handling"))
+                    dynamic "match_pattern" {
+                      for_each = length(lookup(json_body.value, "match_pattern", {})) == 0 ? [] : [lookup(json_body.value, "match_pattern")]
+                      content {
+                        dynamic "all" {
+                          for_each = length(lookup(match_pattern.value, "all", {})) == 0 ? [] : [lookup(match_pattern.value, "all")]
+                          content {}
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
             positional_constraint = lookup(byte_match_statement.value, "positional_constraint")
@@ -240,7 +261,7 @@ resource "aws_wafv2_web_acl" "main" {
     }
   }
 
-  tags              = var.custom_tags != null ? merge(var.custom_tags, local.shared_tags) : merge(local.shared_tags)
+  tags                 = merge(local.shared_tags, var.extra_tags)
 
   dynamic "visibility_config" {
     for_each = length(var.visibility_config) == 0 ? [] : [var.visibility_config]
@@ -251,4 +272,3 @@ resource "aws_wafv2_web_acl" "main" {
     }
   }
 }
-

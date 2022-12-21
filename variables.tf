@@ -6,11 +6,12 @@ variable "prjid" {
   description = "Name of the project/stack e.g: mystack, nifieks, demoaci. Should not be changed after running 'tf apply'"
 }
 
-variable "custom_tags" {
-  type        = any
-  description = "Extra custom tags"
-  default     = null
+variable "extra_tags" {
+  description = "Additional tags to associate"
+  type        = map(string)
+  default     = {}
 }
+
 variable "enabled" {
   type        = bool
   description = "Whether to create the resources. Set to `false` to prevent the module from creating any resources"
@@ -20,19 +21,13 @@ variable "enabled" {
 variable "name" {
   type        = string
   description = "Name used to create resources."
-  default = null
+  default     = null
 }
 
 variable "alb_arn" {
   type        = string
   description = "Application Load Balancer ARN"
   default     = null
-}
-
-variable "tags" {
-  description = "A map of tags (key-value pairs) passed to resources."
-  type        = map(string)
-  default     = {}
 }
 
 variable "rules" {
