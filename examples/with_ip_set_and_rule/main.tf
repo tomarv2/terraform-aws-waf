@@ -2,7 +2,7 @@ terraform {
   required_version = ">= 1.0.1"
   required_providers {
     aws = {
-      version = "~> 4.35"
+      version = "~> 4.61"
     }
   }
 }
@@ -12,7 +12,7 @@ provider "aws" {
 }
 
 module "common" {
-  source = "git::git@github.com:tomarv2/terraform-global.git//common?ref=v0.0.1"
+  source = "github.com/tomarv2/terraform-global.git//common?ref=v0.0.1"
 }
 
 #####
